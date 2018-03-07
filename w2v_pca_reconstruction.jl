@@ -15,7 +15,7 @@ println("== Filling auxiliar matrix...")
 max_value = maximum(d)
 threshold = 0.01
 for i = 1:length(d)
-    if (d[i] >= threshold * max_value)
+    if (abs(d[i]) >= threshold * max_value)
         aux[i] += d[i]
     end
 end
