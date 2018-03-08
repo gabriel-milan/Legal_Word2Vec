@@ -17,7 +17,7 @@ for i = 1:length(d)
     for j = 1:length(d) - i - 1
         if (abs(d[j]) < abs(d[j + 1]))
             aux = d[j]
-            d[j] = arr[j+1]
+            d[j] = d[j+1]
             d[j + 1] = aux
             swapped = true
         end
