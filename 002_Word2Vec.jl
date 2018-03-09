@@ -114,7 +114,7 @@ end
 
 # Generating dictionary
 println("== Generating dictionary...")
-word_vectors = load("backup_matrices/wordvectors")["wordvectors"]
+word_vectors = load("backup_matrices/wordvectors.jld")["wordvectors"].'
 dict = [words[i]=>word_vectors[i,:].' for i = 1:length(words)]
 
 # Exporting dictionary as JSON
