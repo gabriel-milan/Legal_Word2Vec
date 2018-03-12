@@ -33,15 +33,18 @@ println("- Number of sentences: ", length(sents))
 # Initializing the count array
 println("== Initializing the count array...")
 count = zeros(Int32, length(words), length(words))
+occurencies = zeros(Int32, length(words))
 
 # Counting word matches (symmetric)
 println("== Counting...")
 w = 0
 for sent in sents
 	for i = 1:length(words)
-		if (contains(sent, words[i]))
+        if (contains(sent, words[i]))
+            occurencies[i] += 1
 			for j = i:length(words)
-				if (contains(sent, words[j]))
+                if (contains(sent, words[j]))
+                    occurencies[j] += 1
 					count[i,j] += 1
 					count[j,i] += 1
 				end
@@ -55,6 +58,7 @@ end
 # Saving the array
 println("== Exporting count array...")
 save("backup_matrices/counts.jld", "counts", count)
+save("backup_matrices/occurencies.jld", "occurencies", occurencies)
 
 # Checks if the count array is symmetric
 isSymmetric = Symmetric(count) == count
@@ -62,10 +66,6 @@ println("== The count array is symmetric: ", isSymmetric)
 if (isSymmetric == false)
 	exit
 end
-
-# # Normalizing the count array
-# println("== Normalizing count array (ETA: 1h30 from start)...")
-# count /= norm(count)
 
 # Saving the normalized array
 println("== Exporting normalized array...")
@@ -115,12 +115,17 @@ save("backup_matrices/wordvectors.jld", "wordvectors", word_vectors)
 # Generating dictionary
 println("== Generating dictionary...")
 dict = [words[i]=>word_vectors[i,:].' for i = 1:length(words)]
+occur = [words[i]=>occurencies[i] for i = 1:length(words)]
 
 # Exporting dictionary as JSON
 println("== Exporting dictionary as JSON...")
 json_string = JSON.json(dict)
+json_occur = JSON.json(occur)
 open("output_json/w2v_dict.json", "w") do f
     write(f, json_string)
+end
+open("output_json/count_dict.json", "w") do g
+    write(g, json_occur)
 end
 
 # Prints successful ending
