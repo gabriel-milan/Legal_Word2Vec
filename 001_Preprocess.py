@@ -57,6 +57,7 @@ f.close()
 path = "./input_data/"
 files = [f for f in listdir(path) if isfile(join(path, f))]
 for filename in files:
+    print("== Processing file {}".format(filename))
     text = ""
     ext = splitext(filename)[1]
     f = open(join(path, filename))
