@@ -2,15 +2,24 @@
 import string
 from os import listdir
 from nltk import sent_tokenize
-from os.path import isfile, join
+from xml.etree import cElementTree as ET
+from os.path import isfile, join, splitext
 
 # Opening file and reading text
 text = ""
 path = "./input_data/"
 files = [f for f in listdir(path) if isfile(join(path, f))]
 for filename in files:
+    ext = splitext(filename)[1]
     f = open(join(path, filename))
-    text += f.read()
+    if (ext == '.txt'):
+        text += f.read()
+    elif (ext == '.xml'):
+        xmlstr = f.read()
+        root = ET.fromstring(xmlstr)
+        for page in list(root):
+            text += page.find('title').text
+            text += page.find('content').text
     f.close()
 
 # Splitting words
