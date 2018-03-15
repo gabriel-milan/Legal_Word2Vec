@@ -1,4 +1,5 @@
 # Imports
+import re
 import string
 from os import listdir
 from nltk import sent_tokenize
@@ -65,15 +66,7 @@ for filename in files:
         text += f.read()
     elif (ext == ".xml"):
         xml_str = f.read()
-        end_index = 0
-        beg_index = xml_str[end_index:].find('>')
-        end_index = xml_str[beg_index:].find('<')
-        while (beg_index != -1):
-            print(xml_str[beg_index:end_index])
-            text += xml_str[beg_index:end_index]
-            text += '\n'
-            beg_index = xml_str[end_index:].find('>')
-            end_index = xml_str[beg_index:].find('<')
+        text += re.sub(r'<.+?>', '', xml_str)
     f.close()
     AppendWords(SplitWords(text))
     AppendSents(SplitSentences(text))
