@@ -61,7 +61,14 @@ for filename in files:
     text = ""
     ext = splitext(filename)[1]
     f = open(join(path, filename))
-    text += f.read()
+    if (ext == ".txt"):
+        text += f.read()
+    elif (ext == ".xml"):
+        for page in ET.fromstring(f.read()).findall('.//page'):
+            text += page.find('title').text
+            text += '\n'
+            text += page.find('comment').text
+            text += '\n'
     f.close()
     AppendWords(SplitWords(text))
     AppendSents(SplitSentences(text))
