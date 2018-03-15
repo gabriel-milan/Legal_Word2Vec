@@ -64,11 +64,16 @@ for filename in files:
     if (ext == ".txt"):
         text += f.read()
     elif (ext == ".xml"):
-        for page in ET.fromstring(f.read()).findall('.//page'):
-            text += page.find('title').text
+        xml_str = f.read()
+        end_index = 0
+        beg_index = xml_str[end_index:].find('>')
+        end_index = xml_str[beg_index:].find('<')
+        while (beg_index != -1):
+            print(xml_str[beg_index:end_index])
+            text += xml_str[beg_index:end_index]
             text += '\n'
-            text += page.find('comment').text
-            text += '\n'
+            beg_index = xml_str[end_index:].find('>')
+            end_index = xml_str[beg_index:].find('<')
     f.close()
     AppendWords(SplitWords(text))
     AppendSents(SplitSentences(text))
