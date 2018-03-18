@@ -1,6 +1,6 @@
 # Defining the size of the word vectors
 println("== Defining word vectors size...")
-m = 50
+m = 350
 
 # Important packages
 println("== Compiling useful packages...")
@@ -114,7 +114,7 @@ save("backup_matrices/wordvectors.jld", "wordvectors", word_vectors)
 
 # Generating dictionary
 println("== Generating dictionary...")
-dict = [words[i]=>word_vectors[i,:].' for i = 1:length(words)]
+dict = [words[i]=>word_vectors.'[i,:] for i = 1:length(words)]
 occur = [words[i]=>occurencies[i] for i = 1:length(words)]
 
 # Exporting dictionary as JSON
